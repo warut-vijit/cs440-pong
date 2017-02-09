@@ -1,3 +1,4 @@
+import random
 class MDP:
     
     def __init__(self, 
@@ -44,12 +45,24 @@ class MDP:
         '''
         action_performed = self.actions[action_selected]
         self.paddle_y = min(1.0, max(0.0, self.paddle_y + action_performed))
-        self.ball_x = min(1.0, max(0.0, self.ball_x + self.velocity_x))
-        self.ball_y = min(1.0, max(0.0, self.ball_y + self.velocity_y))
-        self.velocity_x *= -1 if self.ball_x == 0.0 else 1
-        self.velocity_y *= -1 if self.ball_y == 1.0 or self.ball_y == 0.0 else 1
-        self.velocity_x *= -1 if abs(self.ball_y-self.paddle_y)<paddle_height/2 and self.else 1
-        
+        if self.ball_y<0:
+            self.ball_y *= -1
+            self.velocity_y *= -1
+        elif self.ball_y>1:
+            self.ball_y = 2-self.ball_y
+            self.velocity_y *= -1
+        if self.ball_x<0:
+            self.ball_x *= -1
+            self.velocity_x *= -1
+        if self.ball_x>1:
+            if self.ball_y>=self.paddle_y and self.ball_y<=self.paddle_y+self.paddle_height:
+                self.velocity_x = -1*self.velocity_x+random.uniform(-0.015,0.015)
+                self.velocity_y = velocity_y+random.uniform(-0.03,0.03)
+                if abs(self.velocity_x)<0.3:
+                    self.velocity_x = -0.3 if self.velocity_x<0 else 0.3
+                #bounce
+            else:
+                #lose
         pass
     
     def discretize_state(self):
