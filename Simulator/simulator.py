@@ -38,6 +38,6 @@ class Simulator:
         '''
         Simulate an actual game till the agent loses.
         '''
-        MDP(granularity=self.granularity)
+        MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4,granularity=self.granularity)
         # Get return values from game
         pass
