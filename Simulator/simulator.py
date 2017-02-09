@@ -1,5 +1,5 @@
 import numpy as np
-import MDP.MDP as MDP
+from MDP.MDP import MDP
 
 
 class Simulator:
@@ -43,6 +43,7 @@ class Simulator:
         '''
         #apply rewards and stuff
         game_log = []
+        turn = 1
         game = MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4,q_array=self.q_array)
         while True: # while paddle has not missed
             action = self.f_function(game.discretize_state, game.q_array) # get action given current state, q array
@@ -55,6 +56,7 @@ class Simulator:
             else: # loss
                 game_log.append( (game.discretize_state, action, -1) )
                 break
+            print(game.ball_x,game.ball_y)
         while len(game_log)>0:
             game_log.pop()
         pass

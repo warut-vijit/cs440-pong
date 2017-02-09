@@ -34,7 +34,7 @@ class MDP:
         '''
         Helper function for the initializer. Initialize member variables with provided or default values.
         '''
-        self.paddle_height = paddle_height if paddle_height != None else 0.2
+        self.paddle_height = 0.2
         self.ball_x = ball_x if ball_x != None else 0.5
         self.ball_y = ball_y if ball_y != None else 0.5
         self.velocity_x = velocity_x if velocity_x != None else 0.03
