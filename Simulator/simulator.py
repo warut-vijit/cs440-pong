@@ -1,4 +1,4 @@
-import numpy as np
+import random
 from MDP.MDP import MDP
 
 
@@ -26,8 +26,15 @@ class Simulator:
         :return action selected
         '''
         action_selected = 0
-        # Your Code Goes Here!
-        
+        if random.random()<=self.epsilon_value: # exploring
+            action_selected = random.randint(0,2)
+        else: 
+            if q[0][state]>q[1][state] and q[0][state]>q[2][state]:
+                action_selected = 0
+            elif q[1][state]>q[2][state]:
+                action_selected = 1
+            else:
+                action_selected = 2
         return action_selected
 
     def train_agent(self):
@@ -46,17 +53,16 @@ class Simulator:
         turn = 1
         game = MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4,q_array=self.q_array)
         while True: # while paddle has not missed
-            action = self.f_function(game.discretize_state, game.q_array) # get action given current state, q array
+            action = self.f_function(game.discretize_state(), game.q_array) # get action given current state, q array
             game.simulate_one_time_step(action) # advance one step
             if game.bounce: # if paddle bounced
-                game_log.append( (game.discretize_state, action, 1) )
+                game_log.append( (game.discretize_state(), action, 1) )
                 game.bounce = False
             elif not game.miss: # neutral state
-                game_log.append( (game.discretize_state, action, 0) )
+                game_log.append( (game.discretize_state(), action, 0) )
             else: # loss
-                game_log.append( (game.discretize_state, action, -1) )
+                game_log.append( (game.discretize_state(), action, -1) )
                 break
-            print(game.ball_x,game.ball_y)
         while len(game_log)>0:
-            game_log.pop()
+            print(game_log.pop())
         pass

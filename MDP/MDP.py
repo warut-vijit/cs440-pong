@@ -1,4 +1,6 @@
 import random
+import math
+
 class MDP:
     
     def __init__(self, 
@@ -53,6 +55,8 @@ class MDP:
         '''
         action_performed = self.actions[action_selected]
         self.paddle_y = min(1.0, max(0.0, self.paddle_y + action_performed))
+        self.ball_x += self.velocity_x
+        self.ball_y += self.velocity_y
         if self.ball_y<0:
             self.ball_y *= -1
             self.velocity_y *= -1
@@ -97,7 +101,7 @@ class MDP:
         if self.velocity_x == -0.3:
             vel_x = 0
 
-        paddle = math.floor(12*paddle_y/(1-paddle_height))
+        paddle = math.floor(12*self.paddle_y/(1-self.paddle_height))
 
         index = 864*ball_x + 72*ball_y + 36*vel_x + 12*vel_y + paddle
-        return index
+        return int(index)
