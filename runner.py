@@ -8,5 +8,4 @@ if __name__ == "__main__":
     gamma_value = 0
     epsilon_value = 0
     num_games = 0
-    granularity = 0
-    Simulator(num_games, alpha_value, gamma_value, epsilon_value, granularity)
+    Simulator(num_games, alpha_value, gamma_value, epsilon_value)

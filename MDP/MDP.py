@@ -6,8 +6,7 @@ class MDP:
                  ball_y=None,
                  velocity_x=None,
                  velocity_y=None,
-                 paddle_y=None,
-                 granularity=None):
+                 paddle_y=None):
         '''
         Setup MDP with the initial values provided.
         '''
@@ -17,7 +16,6 @@ class MDP:
             velocity_x=velocity_x,
             velocity_y=velocity_y,
             paddle_y=paddle_y
-            granularity=granularity
         )
         
         # the agent can choose between 3 actions - stay, up or down respectively.
@@ -29,8 +27,7 @@ class MDP:
               ball_y=None,
               velocity_x=None,
               velocity_y=None,
-              paddle_y=None,
-              granularity=None):
+              paddle_y=None):
         '''
         Helper function for the initializer. Initialize member variables with provided or default values.
         '''
@@ -40,7 +37,10 @@ class MDP:
         self.velocity_x = velocity_x if velocity_x != None else 0.03
         self.velocity_y = velocity_y if velocity_y != None else 0.01
         self.paddle_y = paddle_y if paddle_y != None else 0.5
-        self.granularity = granularity if granularity != None else 10
+
+        # boolean flags to generate rewards
+        self.bounce = False
+        self.miss = False
     
     def simulate_one_time_step(self, action_selected):
         '''
@@ -64,9 +64,10 @@ class MDP:
                 self.velocity_y = velocity_y+random.uniform(-0.03,0.03)
                 if abs(self.velocity_x)<0.3:
                     self.velocity_x = -0.3 if self.velocity_x<0 else 0.3
-                #bounce
-            else:
-                #lose
+                if abs(self.velocity_x)>1:
+                    self.velocity.x = -1 if self.velocity.x<0 else 1
+                if abs(self.velocity_y)>1:
+                    self.velocity.y = -1 if self.velocity.y<0 else 1
         pass
     
     def discretize_state(self):

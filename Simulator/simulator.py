@@ -12,9 +12,9 @@ class Simulator:
         self.epsilon_value = epsilon_value       
         self.alpha_value = alpha_value       
         self.gamma_val = gamma_value
-        self.granularity = granularity
+        self.q_array = [] # array of q values, length 10369 
         
-        # Your Code Goes Here!
+        # Your Code Goes Here
     
     def f_function(self):
         '''
@@ -38,6 +38,7 @@ class Simulator:
         '''
         Simulate an actual game till the agent loses.
         '''
-        MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4,granularity=self.granularity)
-        # Get return values from game
+        game = MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4)
+        while not game.miss: # while paddle has not missed
+            
         pass
