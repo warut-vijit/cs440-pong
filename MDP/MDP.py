@@ -74,5 +74,24 @@ class MDP:
         '''
         Convert the current continuous state to a discrete state.
         '''
-        # Your Code Goes Here!
-        pass
+        #ball passed paddle
+        if self.ball_x >1:
+            return 10368
+
+        ball_x = math.floor(self.ball_x*12)
+        ball_y = math.floor(self.ball_y*12)
+        vel_y = 1
+
+        if self.velocity_y > 0.15:
+            vel_y = 2
+        elif self.velocity_y < -0.15:
+            vel_y = 0
+
+        vel_x = 1
+        if self.velocity_x == -0.3:
+            vel_x = 0
+
+        paddle = math.floor(12*paddle_y/(1-paddle_height))
+
+        index = 864*ball_x + 72*ball_y + 36*vel_x + 12*vel_y + paddle
+        return index
