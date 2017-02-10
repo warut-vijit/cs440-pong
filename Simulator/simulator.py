@@ -15,8 +15,8 @@ class Simulator:
         self.num_games = num_games       
         self.epsilon_value = epsilon_value       
         self.alpha_value = alpha_value       
-        self.gamma_val = gamma_value
-        self.q_array = [[0] * 10369]*3 # 2d array of q values, length 10369, with 3 actions 
+        self.gamma_value = gamma_value
+        self.q_array = [[0] * 10369 for action in range(3)] # 2d array of q values, length 10369, with 3 actions 
         
         self.train_agent()
     
@@ -43,26 +43,34 @@ class Simulator:
         '''
         self.play_game()
         pass
-    
+
+    def update_q(self, state, action, reward):
+        '''
+        Update value of q given game state
+        '''
+        # update own state
+        ball_x = state/864
+        ball_y = (state%864)/72
+        # calculate expected value of Q for each possible next state
+        
+        temp = self.q_array[action][state] + self.alpha_value * error
+
     def play_game(self):
         '''
         Simulate an actual game till the agent loses.
         '''
         #apply rewards and stuff
-        game_log = []
         turn = 1
-        game = MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4,q_array=self.q_array)
+        game = MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4)
         while True: # while paddle has not missed
-            action = self.f_function(game.discretize_state(), game.q_array) # get action given current state, q array
+            action = self.f_function(game.discretize_state(), self.q_array) # get action given current state, q array
             game.simulate_one_time_step(action) # advance one step
             if game.bounce: # if paddle bounced
-                game_log.append( (game.discretize_state(), action, 1) )
+                self.update_q(game.discretize_state(), action, 1)
                 game.bounce = False
             elif not game.miss: # neutral state
-                game_log.append( (game.discretize_state(), action, 0) )
+                self.update_q(game.discretize_state(), action, 0)
             else: # loss
-                game_log.append( (game.discretize_state(), action, -1) )
+                self.update_q(game.discretize_state(), action, -1)
                 break
-        while len(game_log)>0:
-            print(game_log.pop())
         pass

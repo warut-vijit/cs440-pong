@@ -8,8 +8,7 @@ class MDP:
                  ball_y=None,
                  velocity_x=None,
                  velocity_y=None,
-                 paddle_y=None,
-                 q_array=None):
+                 paddle_y=None):
         '''
         Setup MDP with the initial values provided.
         '''
@@ -18,8 +17,7 @@ class MDP:
             ball_y=ball_y,
             velocity_x=velocity_x,
             velocity_y=velocity_y,
-            paddle_y=paddle_y,
-            q_array=q_array
+            paddle_y=paddle_y
         )
         
         # the agent can choose between 3 actions - stay, up or down respectively.
@@ -31,8 +29,7 @@ class MDP:
               ball_y=None,
               velocity_x=None,
               velocity_y=None,
-              paddle_y=None,
-              q_array=None):
+              paddle_y=None):
         '''
         Helper function for the initializer. Initialize member variables with provided or default values.
         '''
@@ -42,7 +39,6 @@ class MDP:
         self.velocity_x = velocity_x if velocity_x != None else 0.03
         self.velocity_y = velocity_y if velocity_y != None else 0.01
         self.paddle_y = paddle_y if paddle_y != None else 0.5
-        self.q_array = q_array
 
         # boolean flags to generate rewards
         self.bounce = False
@@ -92,13 +88,13 @@ class MDP:
         ball_y = math.floor(self.ball_y*12)
         vel_y = 1
 
-        if self.velocity_y > 0.15:
+        if self.velocity_y > 0.015:
             vel_y = 2
-        elif self.velocity_y < -0.15:
+        elif self.velocity_y < -0.015:
             vel_y = 0
 
         vel_x = 1
-        if self.velocity_x == -0.3:
+        if self.velocity_x < 0:
             vel_x = 0
 
         paddle = math.floor(12*self.paddle_y/(1-self.paddle_height))
