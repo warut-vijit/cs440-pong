@@ -16,7 +16,7 @@ class Simulator:
         self.epsilon_value = epsilon_value       
         self.alpha_value = alpha_value       
         self.gamma_value = gamma_value
-        self.q_array = [[0] * 10369 for action in range(3)] # 2d array of q values, length 10369, with 3 actions 
+        self.q_array = [[0.0] * 10369 for action in range(3)] # 2d array of q values, length 10369, with 3 actions 
         
         self.train_agent()
     
@@ -41,36 +41,40 @@ class Simulator:
         '''
         Train the agent over a certain number of games.
         '''
-        self.play_game()
+        for x in range(self.num_games):
+            self.play_game()
+        print self.q_array
         pass
 
-    def update_q(self, state, action, reward):
+    def update_q(self, state_log):
         '''
         Update value of q given game state
         '''
-        # update own state
-        ball_x = state/864
-        ball_y = (state%864)/72
-        # calculate expected value of Q for each possible next state
-        
-        temp = self.q_array[action][state] + self.alpha_value * error
+        successor_state = None
+        while len(state_log) > 0: # while states remain
+            current_entry = state_log.pop()
+            max_successor = max(self.q_array[0][successor_state], self.q_array[1][successor_state], self.q_array[2][successor_state]) if successor_state != None else 0
+            value = current_entry[2] + self.gamma_value*max_successor - self.q_array[ current_entry[1] ][ current_entry[0] ]
+            self.q_array[ current_entry[1] ][ current_entry[0] ] = self.q_array[ current_entry[1] ][ current_entry[0] ] + self.alpha_value * value
+            successor_state = current_entry[0] # store current state as successor of predecessor
 
     def play_game(self):
         '''
         Simulate an actual game till the agent loses.
         '''
         #apply rewards and stuff
-        turn = 1
+        state_log = []
         game = MDP(ball_x=0.5,ball_y=0.5,velocity_x=0.03,velocity_y=0.01,paddle_y=0.4)
         while True: # while paddle has not missed
             action = self.f_function(game.discretize_state(), self.q_array) # get action given current state, q array
             game.simulate_one_time_step(action) # advance one step
             if game.bounce: # if paddle bounced
-                self.update_q(game.discretize_state(), action, 1)
+                state_log.append( (game.discretize_state(), action, 1) )
                 game.bounce = False
             elif not game.miss: # neutral state
-                self.update_q(game.discretize_state(), action, 0)
+                state_log.append( (game.discretize_state(), action, 0) )
             else: # loss
-                self.update_q(game.discretize_state(), action, -1)
+                state_log.append( (game.discretize_state(), action, -1) )
                 break
+        self.update_q(state_log)
         pass

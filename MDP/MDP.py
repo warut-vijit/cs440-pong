@@ -65,7 +65,7 @@ class MDP:
         if self.ball_x>1:
             if self.ball_y>=self.paddle_y and self.ball_y<=self.paddle_y+self.paddle_height:
                 self.velocity_x = -1*self.velocity_x+random.uniform(-0.015,0.015)
-                self.velocity_y = velocity_y+random.uniform(-0.03,0.03)
+                self.velocity_y = self.velocity_y+random.uniform(-0.03,0.03)
                 if abs(self.velocity_x)<0.3:
                     self.velocity_x = -0.3 if self.velocity_x<0 else 0.3
                 if abs(self.velocity_x)>1:
