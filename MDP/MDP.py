@@ -42,7 +42,6 @@ class MDP:
 
         # boolean flags to generate rewards
         self.bounce = False
-        self.miss = False
     
     def simulate_one_time_step(self, action_selected):
         '''
@@ -50,7 +49,7 @@ class MDP:
         Perform the action on the current continuous state.
         '''
         action_performed = self.actions[action_selected]
-        self.paddle_y = min(1.0, max(0.0, self.paddle_y + action_performed))
+        self.paddle_y = min(0.8, max(0.0, self.paddle_y + action_performed))
         self.ball_x += self.velocity_x
         self.ball_y += self.velocity_y
         if self.ball_y<0:
@@ -66,14 +65,14 @@ class MDP:
             if self.ball_y>=self.paddle_y and self.ball_y<=self.paddle_y+self.paddle_height:
                 self.velocity_x = -1*self.velocity_x+random.uniform(-0.015,0.015)
                 self.velocity_y = self.velocity_y+random.uniform(-0.03,0.03)
-                if abs(self.velocity_x)<0.3:
-                    self.velocity_x = -0.3 if self.velocity_x<0 else 0.3
-                if abs(self.velocity_x)>1:
-                    self.velocity.x = -1 if self.velocity.x<0 else 1
-                if abs(self.velocity_y)>1:
-                    self.velocity.y = -1 if self.velocity.y<0 else 1
+                self.ball_x = 2 - self.ball_x
                 self.bounce = True
-            self.miss = True
+        if abs(self.velocity_x)<0.3:
+            self.velocity_x = -0.3 if self.velocity_x<0 else 0.3
+        if abs(self.velocity_x)>1:
+            self.velocity.x = -1 if self.velocity.x<0 else 1
+        if abs(self.velocity_y)>1:
+            self.velocity.y = -1 if self.velocity.y<0 else 1
         pass
     
     def discretize_state(self):
