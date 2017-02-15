@@ -64,6 +64,10 @@ class Simulator:
                 elif y<0:
                     neg+=1
         print str(pos)+" -- "+str(neg)
+        for action in range(3):
+            for x in range(11*864,11*864+863):
+                if self.q_array[action][x]>0:
+                    print self.q_array[action][x]
         pass
 
     def update_q(self, state_log):
@@ -80,12 +84,12 @@ class Simulator:
             self.q_succ[ current_entry[1] ][ current_entry[0] ][1]+=1
 
             max_successor = max(self.q_succ[0][current_entry[0]][0], self.q_succ[1][ current_entry[0] ][0], self.q_succ[2][current_entry[0]][0])
-            if self.epsilon_value==0:
-                print self.q_array[0][current_entry[0]]
-                print self.q_array[1][current_entry[0]]
-                print self.q_array[2][current_entry[0]]
-                print current_entry
-                print ""
+            #if self.epsilon_value==0:
+            #    print self.q_array[0][current_entry[0]]
+            #    print self.q_array[1][current_entry[0]]
+            #    print self.q_array[2][current_entry[0]]
+            #    print current_entry
+            #    print ""
             value = current_entry[2] + self.gamma_value*max_successor - self.q_array[ current_entry[1] ][ current_entry[0] ]
             self.q_array[ current_entry[1] ][ current_entry[0] ] = self.q_array[ current_entry[1] ][ current_entry[0] ] + self.alpha_value * value
             successor_state = current_entry[0]
