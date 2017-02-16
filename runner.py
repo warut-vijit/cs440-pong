@@ -6,6 +6,6 @@ if __name__ == "__main__":
     '''
     alpha_value = 0.4
     gamma_value = 0.95
-    epsilon_value = 0.3 # 0.04
-    num_games = 1000
+    epsilon_value = 0.8 # 0.04
+    num_games = 60000
     Simulator(num_games, alpha_value, gamma_value, epsilon_value)
