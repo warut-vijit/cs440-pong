@@ -55,29 +55,6 @@ class Simulator:
         bounce = self.play_game()
         if bounce >max_bounces:
             max_bounces=bounce
-
-        pos = 0
-        neg = 0
-        for x in self.q_succ: # output number of cells that have information
-            for y in x:
-                if y[0]>0:
-                    pos+=1
-                elif y[0]<0:
-                    neg+=1
-       # print str(pos)+" -- "+str(neg)
-        pos = 0
-        neg = 0
-        for x in self.q_array:
-            for y in x:
-                if y>0:
-                    pos+=1
-                elif y<0:
-                    neg+=1
-       # print str(pos)+" -- "+str(neg)
-        #for action in range(3):
-         #   for x in range(11*864,11*864+863):
-          #      if self.q_array[action][x]>0:
-           #         print self.q_array[action][x]
         print max_bounces
         pass
 
