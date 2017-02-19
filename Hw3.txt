@@ -1,0 +1,48 @@
+CS 440 Homework 3
+Arthur Li ali32, Duke Vijitbenjaronk wdv2
+----------------------------------------------
+
+1.	a) alpha = 0.4, gamma = 0.95, epsilon = 0.8. This uses the normal parameters except for a high learning rate
+				in order to explore as many states as possible. This yielded an average maximum of 15.4 bounces over 5 games.
+		b) alpha = 0.4, gamma = 0.95, epsilon = 0.04. This is the default and a fairly slow learning rate. The rest of the
+				parameters were kept constant. This yielded an average maximum bounce count of 17.4 over 5 games.
+		c) alpha = 0.8, gamma = 0.95, epsilon = 0.04. This significantly increased the learning rate, but did not significantly
+				change the average maximum bounce count, which was 17.8 over 5 games.
+		d) alpha = 0.8, gamma = 0.5, epsilon = 0.04. This decreased gamma, which prioritized recent events over more 
+				distant ones. The average maximum bounce count here was 17.6 over 5 games.
+2. The best set of parameters was alpha = 0.8, gamma = 0.95, epsilon = 0.04, with an average score of 17.8.
+3. Training using random starting states causes slower learning of the best policy for any given initial state, but it does
+		result in learning values more quickly for a greater proportion of states. Thus, training for random initial state would
+		yield better performance for certain arbitrary starting states, but would not learn an optimal or near-optimal policy
+		for any particular state compared to training constantly from that one. In the case of Q-learning and Pong, more of the
+		cells would be filled with non-zero values, but the error compared to the true utility would be greater for each one.
+4. 	a)	The Pong game is not technically a Markov Decision Process because the state transition each frame is not strictly
+				a result of the previous state alone. The confounding variables, such as the non-discretized velocity and position,
+				determine the state and are partially a result of previous states. The immediate predecessor for a state is not
+				adequate to determine its successor. For example, if a state is reached from the left, its distribution of next state is
+				different from if it were entered from the top. This is not the case in a true MDP. A non-Markov process modelled by
+				Q-learning is not uniform, so it cannot be perfectly modeled with a table of states alone. It would require almost-
+				infinite memory to store all possible sequences of state as opposed to simply all states.
+		b) If our Pong environment were a true MDP, we would expect that each state transition distribution from a certain
+				state should be the same regardless of which state resulted in the current one. For example, we would expect the ball to
+				move the same in a certain state regardless of the trajectory that it had when entering that state. A learner using
+				Q-learning would be able to converge upon the optimal policy much more quickly. 
+5.	a)	1; From our own observations, there was a clear relationship between the value of epsilon and the time it requires to
+				reach an acceptable policy. For essentially any application, there exists a relationship between learning time and epsilon,
+				although the exact shape of the relationship, which may not be strictly monotonic, may vary according to the problem.
+		b)	2; Although there is a large variance for each choice of epsilon, experimental trials in our implementation of Pong found
+				that the choice of epsilon significantly changes the mean of the distribution. As with the previous question, the particular
+				problem may make this difference more or less pronounced.
+		c) 4; Due to the largely deterministic nature and few transitions per state of the environment in Pong, a game with a low
+				value of epsilon will spend a greater amount of effort in relevant areas of the state space and is therefore more likely to
+				see more bounces and states per game, while a learner with a high value of epsilon will spend a lot of time moving randomly
+				and is unlikely to observe positive rewards. Since the length of a game and the number of observations seen depends
+				strongly on the number of bounces while training, a learner with low epsilon will see more observations and learn a better
+				policy after a certain number of games. 
+		d)	2; Similarly to our answer in 5c, a learner in an environment similar to Pong will learn faster and see more observations with
+				a fairly low value of epsilon. However, we cannot relate the learning with epsilon=0.15 and with epsilon=0.01 with reasonable
+				accuracy because a certain level of exploration may lead to a better policy. The tradeoff between trying variations in state
+				and attempting to maximize observations by moving near-optimally depends on the exact application and may vary.
+		e)	3; We can say with adequate confidence that t3 and t4 are generally less than t1 and t2 because of the reasons stated in 5c,
+				but whether the times are related as t4<t3<t2<t1 or as t3<t4<t2<t1 depends on the application and the number of valid moves.
+				The trade-off depends on the characteristics of each application. 
